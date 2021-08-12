@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	userpb "example.com/grpc-mongo-crud/proto"
+	userpb "github.com/nanayunn/grpc-mongo-crud/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )

@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	userpb "example.com/grpc-mongo-crud/proto"
+	userpb "github.com/nanayunn/grpc-mongo-crud/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

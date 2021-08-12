@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "example.com/grpc-mongo-crud/client/cmd"
+import "github.com/nanayunn/grpc-mongo-crud/client/cmd"
 
 func main() {
 	cmd.Execute()

@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"time"
 
-	userpb "example.com/grpc-mongo-crud/proto"
+	userpb "github.com/nanayunn/grpc-mongo-crud/proto"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
