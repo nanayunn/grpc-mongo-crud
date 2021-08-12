@@ -1,0 +1,13 @@
+# Builder Image
+FROM golang:1.15.13-alpine as builder
+RUN apk update && apk add make g++
+WORKDIR /grpc-mongo-crud/
+COPY ./ /grpc-mongo-crud/
+RUN make
+
+# Runner Image
+FROM alpine
+COPY --from=builder /grpc-mongo-crud/server/bin /go/bin/
+EXPOSE 50051
+
+CMD ["/go/bin/server"]
