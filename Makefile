@@ -5,7 +5,7 @@ export GO111MODULE
 export PATH
 export CGO_ENABLED=0
 
-default: prepare user.pb user.pb.gw  compile
+default: user.pb user.pb.gw  compile
 
 user.pb: 
 	protoc -I . -I /usr/local/include \

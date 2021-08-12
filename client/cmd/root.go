@@ -22,7 +22,7 @@ import (
 	"os"
 	"time"
 
-	userpb "example.com/grpc-mongo-crud/proto"
+	userpb "github.com/nanayunn/grpc-mongo-crud/proto"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
