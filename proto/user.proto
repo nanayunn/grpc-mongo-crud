@@ -4,7 +4,7 @@ package user;
 
 import "google/api/annotations.proto";
 
-option go_package = "proto/userpb";
+option go_package = "github.com/nanayunn/grpc-mongo-crud/proto";
 
 service UserService {
     rpc CreateUser(CreateUserReq) returns (CreateUserRes){

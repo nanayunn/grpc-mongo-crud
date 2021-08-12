@@ -5,7 +5,7 @@ export GO111MODULE
 export PATH
 export CGO_ENABLED=0
 
-default: user.pb user.pb.gw  compile
+default: user.pb user_grpc.pb  user.pb.gw  compile
 
 user.pb: 
 	protoc -I . -I /usr/local/include \
@@ -35,5 +35,5 @@ prepare:
 
 compile:
 	go build -o bin/server server/main.go 
-	go build -o bin/gateway grpc-gw-server/gateway.go
+	go build -o bin/gateway gateway/gateway.go
 	go build -o bin/client client/main.go
