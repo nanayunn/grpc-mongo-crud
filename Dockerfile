@@ -19,7 +19,6 @@ COPY . .
 
 # Build the application
 RUN go build -o bin/server server/main.go
-
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
@@ -28,6 +27,7 @@ RUN cp /build/bin/server .
 
 # Export necessary port
 EXPOSE 50051
+EXPOSE 50050
 
 # Command to run when starting the container
 CMD ["/dist/server"]

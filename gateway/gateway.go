@@ -1,4 +1,4 @@
-package main
+package gateway
 
 import (
 	"context"
@@ -15,7 +15,7 @@ const (
 	grpc_server_port = "0.0.0.0:50050"
 )
 
-func main() {
+func RungrpcGateway() error {
 	ctx := context.Background()
 	mux := runtime.NewServeMux()
 
@@ -30,11 +30,15 @@ func main() {
 		options,
 	); err != nil {
 		log.Fatalf("failed to register gRPC gateway: %v", err)
+		return err
 	}
 
 	log.Printf("start HTTP server on %s", grpc_server_port)
 	if err := http.ListenAndServe(grpc_server_port, mux); err != nil {
 		log.Fatalf("failed to serve: %s", err)
+		return err
 	}
+	return nil
 
 }
+

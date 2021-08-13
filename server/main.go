@@ -8,7 +8,10 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	_ "strings"
+	"net/url"
 
+	gw "github.com/nanayunn/grpc-mongo-crud/gateway"
 	userpb "github.com/nanayunn/grpc-mongo-crud/proto"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -184,32 +187,44 @@ func (u *UserServiceServer) ListUser(req *userpb.ListUserReq, stream userpb.User
 }
 
 const (
-	username         = "admin"
-	password         = "admin"
+	username         = "piolink"
+	password         = "piolink0726"
 	hostname         = "example-mongodb-svc.default.svc.cluster.local"
-	mongo_port       = "27017"
+	//hostname	 = "10.244.1.23"
+	mongo_port       = "27017/mydb_user"
 	server_port      = "0.0.0.0:50051"
 	grpc_server_port = "0.0.0.0:50050"
 )
 
 func getConnectionURI() string {
-	return "mongodb://" + username + ":" + password + "@" + hostname + ":" + mongo_port
+	return "mongodb://" + url.QueryEscape(username) + ":" + url.QueryEscape(password) + "@" + hostname + ":" + mongo_port
 }
 
 func ConnectDB() (client *mongo.Client, ctx context.Context) {
 
-	// conn_mongo := []string{mongo_address, mongo_port}
-	// conn_mongo_add := strings.Join(conn_mongo, ":")
+	//conn_mongo := []string{hostname, mongo_port}
+	//conn_mongo_add := strings.Join(conn_mongo, ":")
 
-	conn_mongo_url := getConnectionURI()
+	conn_mongo_add := getConnectionURI()
+
+	log.Printf("Connecting to Mongo .. URL : %s\n", conn_mongo_add)
 
 	// Timeout 설정을 위한 Context생성
 	ctx, _ = context.WithTimeout(context.Background(), 3*time.Second)
 	log.Printf("Trying to connect to MongoDB...")
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(conn_mongo_url))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(conn_mongo_add).SetAuth(options.Credential{
+        	Username: username,
+        	Password: password,
+    	}))
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	if err := client.Ping(context.TODO(), nil); err != nil{
+		log.Fatal(err)
+
+	}
+
 	log.Printf("MongoDB Connection Created..")
 
 	return client, ctx
@@ -229,6 +244,7 @@ func main() {
 
 	userpb.RegisterUserServiceServer(grpc_server, srv)
 
+
 	db, mongoCtx = ConnectDB()
 
 	userdb = db.Database("mydb_user").Collection("User")
@@ -240,6 +256,10 @@ func main() {
 	}()
 
 	fmt.Println("Server Connected! Listening on port : ", server_port)
+
+	if err := gw.RungrpcGateway(); err != nil {
+		log.Fatalf("Failed to Open HTTP gw Server..")
+	}
 
 	c := make(chan os.Signal)
 
