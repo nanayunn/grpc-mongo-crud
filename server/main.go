@@ -191,7 +191,7 @@ const (
 	password         = "piolink0726"
 	hostname         = "example-mongodb-svc.default.svc.cluster.local"
 	//hostname	 = "10.244.1.23"
-	mongo_port       = "27017/mydb_user"
+	mongo_port       = "27017"
 	server_port      = "0.0.0.0:50051"
 	grpc_server_port = "0.0.0.0:50050"
 )
@@ -213,9 +213,9 @@ func ConnectDB() (client *mongo.Client, ctx context.Context) {
 	ctx, _ = context.WithTimeout(context.Background(), 3*time.Second)
 	log.Printf("Trying to connect to MongoDB...")
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(conn_mongo_add).SetAuth(options.Credential{
-        	Username: username,
-        	Password: password,
-    	}))
+		Username: username,
+		Password: password,
+	}))
 
 	if err != nil {
 		log.Fatal(err)
